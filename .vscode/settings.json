@@ -1,0 +1,43 @@
+{
+  // 1. 저장 시 자동화 (ESLint 규칙 단독 사용)
+  "editor.formatOnSave": false, // Prettier 대신 ESLint 자동 수정을 사용하므로 포맷팅은 끕니다.
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit",
+    "source.organizeImports": "explicit"
+  },
+  "editor.defaultFormatter": "dbaeumer.vscode-eslint",
+
+  // 2. 들여쓰기 설정 (사용자 요청: 탭 사용, 크기 4)
+  "editor.insertSpaces": false,
+  "editor.tabSize": 4,
+  "editor.detectIndentation": false,
+
+  // 3. TypeScript 편의 설정 (Inlay Hints)
+  "typescript.inlayHints.parameterNames.enabled": "all",
+  "typescript.inlayHints.parameterTypes.enabled": true,
+  "typescript.inlayHints.variableTypes.enabled": true,
+  "typescript.inlayHints.propertyDeclarationTypes.enabled": true,
+  "typescript.inlayHints.functionLikeReturnTypes.enabled": true,
+  "typescript.inlayHints.enumMemberValues.enabled": true,
+
+  // 4. 탐색 및 인터페이스
+  "editor.stickyScroll.enabled": true,
+  "breadcrumbs.enabled": true,
+  "explorer.excludeGitIgnore": true,
+  "files.exclude": {
+    "**/.git": true,
+    "**/.svn": true,
+    "**/.hg": true,
+    "**/CVS": true,
+    "**/.DS_Store": true,
+    "**/Thumbs.db": true
+    // "dist": true // 사용자 요청으로 제외
+  },
+
+  // 5. 기타 개발 편의
+  "editor.suggestSelection": "first",
+  "typescript.preferences.importModuleSpecifier": "non-relative",
+  "javascript.preferences.importModuleSpecifier": "non-relative",
+  "editor.unicodeHighlight.ambiguousCharacters": false,
+  "editor.unicodeHighlight.invisibleCharacters": false
+}
