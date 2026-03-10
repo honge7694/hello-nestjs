@@ -35,7 +35,7 @@ export class AuthService {
 
 		if (user && (await bcrypt.compare(password, user.password))) {
 			const { password, ...result } = user; // 비밀번호 제외 후 user만 추출
-			this.logger.log(`[LOGIN] user: ${JSON.stringify(result)}`);
+			this.logger.log('[LOGIN] 성공', { result });
 
 			return result;
 		} else {

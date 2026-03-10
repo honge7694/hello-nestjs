@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
@@ -7,6 +7,7 @@ import { DatabaseModule } from './common/database/database.module';
 import { ClsModule } from 'nestjs-cls';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtAccessAuthGuard } from './auth/guard/jwt-access-token.guard';
+import { LoggerMiddleware } from './custom-logger/middlewares/logger.middleware';
 
 @Module({
 	imports: [
@@ -17,7 +18,12 @@ import { JwtAccessAuthGuard } from './auth/guard/jwt-access-token.guard';
 
 		ClsModule.forRoot({
 			global: true,
-			middleware: { mount: true }, // 모든 요청마다 자동으로 CLS 컨텍스트 생성
+			middleware: {
+				mount: true,
+				setup: (cls, req) => {
+					cls.set('traceId', crypto.randomUUID());
+				},
+			}, // 모든 요청마다 자동으로 CLS 컨텍스트 생성
 		}),
 
 		TypeOrmModule.forRootAsync({
@@ -56,4 +62,10 @@ import { JwtAccessAuthGuard } from './auth/guard/jwt-access-token.guard';
 		},
 	],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+	configure(consumer: MiddlewareConsumer) {
+		// 모든 라우트('*')에 대해 LoggerMiddleware를 실행
+		consumer.apply(LoggerMiddleware).forRoutes('*');
+	}
+}
+// export class AppModule {}
