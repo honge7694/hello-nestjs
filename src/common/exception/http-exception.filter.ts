@@ -2,6 +2,7 @@ import { ArgumentsHost, Catch, ExceptionFilter, HttpException } from '@nestjs/co
 import { Response, Request } from 'express';
 import { ApiResponse } from '../interface/api-response.interface';
 import { BusinessException } from './business.exception';
+import { ClsServiceManager } from 'nestjs-cls';
 
 interface ErrorResponse {
 	errorCode?: string;
@@ -20,6 +21,9 @@ export class HttpExceptionFilter implements ExceptionFilter {
 			errorCode: exception instanceof BusinessException ? exception.errorCode : undefined,
 			path: request.url,
 		};
+		// CLS에서 현재 요청 UUID 추출
+		const cls = ClsServiceManager.getClsService();
+		const traceId: string = cls.isActive() ? cls.get('traceId') : 'N/A';
 
 		let message: string | string[] | BusinessException;
 
@@ -40,6 +44,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
 			message: message,
 			data: errorData,
 			timestamp: new Date().toISOString(),
+			traceId: traceId,
 		};
 
 		response.status(status).json(errorBody);

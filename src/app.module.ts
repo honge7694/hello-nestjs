@@ -1,4 +1,5 @@
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+import { Request, Response } from 'express';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
@@ -20,8 +21,10 @@ import { LoggerMiddleware } from './custom-logger/middlewares/logger.middleware'
 			global: true,
 			middleware: {
 				mount: true,
-				setup: (cls, req) => {
-					cls.set('traceId', crypto.randomUUID());
+				setup: (cls, req: Request, res: Response) => {
+					const traceId = crypto.randomUUID();
+					cls.set('traceId', traceId);
+					res.setHeader('X-Trace-Id', traceId);
 				},
 			}, // 모든 요청마다 자동으로 CLS 컨텍스트 생성
 		}),

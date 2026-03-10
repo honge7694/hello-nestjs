@@ -7,4 +7,5 @@ export interface ApiResponse<T> {
 	readonly message: string | string[] | object; // 에러 메시지는 배열이나 객체일 수 있음
 	readonly data: T | null;
 	readonly timestamp: string;
+	readonly traceId: string;
 }
