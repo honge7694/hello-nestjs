@@ -1,4 +1,5 @@
 import { HttpStatus } from '@nestjs/common';
+import { ErrorCodeInfo } from 'src/common/interface/error-code.interface';
 
 export const AuthErrorCode = {
 	UNAUTHORIZED: {
@@ -26,4 +27,4 @@ export const AuthErrorCode = {
 		message: '비정상적인 접근이 감지되었습니다. 다시 로그인해 주세요',
 		status: HttpStatus.UNAUTHORIZED,
 	},
-};
+} as const satisfies Record<string, ErrorCodeInfo>;
